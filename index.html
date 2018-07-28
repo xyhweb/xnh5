@@ -1,1 +1,120 @@
-111111111111112222222222233
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>告白气球</title>
+		<style type="text/css">
+			body,html{
+				width:100%;
+				height:100%;
+				background: black;
+			}
+			div{
+				position: absolute;
+				border-radius: 50%;
+			}
+			#txt{
+				position: relative;
+				margin: 320px 600px;
+				font-size: 50px;
+				font-family: "楷体";
+				z-index: 1000;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="txt">
+			<p>勿忘心安</p>
+		</div>
+		<audio src ="mp3/杨坤 - 答案.mp3" autoplay="autoplay"></audio>
+		<!--script type="text/javascript" src ="js/Balloon.js"></script>-->
+		<script type="text/javascript">
+	function Balloon(pic){
+	this.div = document.createElement("div");
+	
+	this.left = randomRange(0,1000);
+	this.top = randomRange(0,600);
+	
+	if(pic==null){
+		this.bg = randomColor();
+		this.r = randomRange(20,80);
+		this.speedX = randomRange(-6,6);
+		this.speedY = randomRange(-6,6);
+	}else{
+		this.bg = pic;
+		this.r = 100;
+		this.speedX = randomRange(-2,2);
+		this.speedY = randomRange(-2,2);
+	}
+}
+
+
+Balloon.prototype.drawBalloon = function(parent){
+	this.parent = parent;
+	var style = this.div.style;
+	style.width = this.r * 2 + "px";
+	style.height = this.r * 2 + "px";
+	style.left = this.left + "px";
+	style.top = this.top + "px";
+	style.background = this.bg;
+	parent.appendChild(this.div);
+}
+function randomRange(min,max){
+	return Math.random()*(max-min)+min;
+}
+			
+function randomColor(){
+	var r = randomRange(0,255);
+	var g = randomRange(0,255);
+	var b = randomRange(0,255);
+	var a = randomRange(0,1);
+	return "rgba("+r+","+g+","+b+","+a+")";	
+}
+Balloon.prototype.run = function(){
+	
+	var maxLeft = this.parent.offsetWidth - this.r * 2;
+	var maxTop = this.parent.offsetHeight - this.r * 2;
+	var ts = this;
+	setInterval (function(){
+		var left = ts.div.offsetLeft + ts.speedX; 
+		var top = ts.div.offsetTop + ts.speedY; 
+		
+		
+		if(left<=0){
+			left = 0;
+			ts.speedX*= -1;
+		}
+		if(top<=0){
+			top = 0;
+			ts.speedY *= -1;
+		}
+		 
+		if(left>= maxLeft){
+			left = maxLeft;
+			ts.speedX *= -1;
+		}
+		
+		if(top>= maxTop){
+			top = maxTop;
+			ts.speedY *= -1;
+		}
+		
+		
+		ts.div.style.left = left + "px";
+		ts.div.style.top = top + "px";
+		
+	},20);
+}
+
+		/*var b = new Balloon("url(img/a1.png)");
+		b.drawBalloon(document.body);
+		b.run();*/
+		for(var i=0;i<=30;i++){
+		var b = new Balloon();
+		b.drawBalloon(document.body);
+		b.run();
+		}	
+		</script>
+	</body>
+</html>
+
